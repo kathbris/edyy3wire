@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Edison 3-Wire Neutral Practice</title>
+<style>/*RESET*/
+html,
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+img,
+p,
+ul,
+ol,
+li,
+a,
+figure,
+figcaption,
+table {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font-weight: normal;
+  font-style: inherit;
+  font-size: 100%;
+  font-family: inherit;
+  color: inherit;
+  vertical-align: baseline;
+  line-height: 0;
+}
+/* Style the tab */
+.tab {
+  overflow: hidden;
+  border: none;
+  background-color: #007f64;
+}
+.tabcontent {
+  animation: fadeEffect 1s; /* Fading effect takes 1 second */
+}
+
+/* Go from zero to full opacity */
+@keyframes fadeEffect {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+/* Style the buttons that are used to open the tab content */
+.tab button {
+  background-color: inherit;
+  float: left;
+  border: 1px solid rgb(0, 0, 0);
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  font-size: 16px;
+  color: #fff;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: #3de0bd;
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  padding: 6px 12px;
+  border: none;
+  border-top: none;
+}
+/*SCHOOL COLOURS*/
+body#bus h1,
+body#bus h2 {
+  background-color: #c59217;
+}
+body#bus h3,
+body#bus a {
+  color: #c59217;
+}
+body#cons h1,
+body#cons h2 {
+  background-color: #4b92db;
+}
+body#cons h3,
+body#cons a {
+  color: #4b92db;
+}
+body#mse h1,
+body#mse h2 {
+  background-color: #007f64;
+}
+body#mse h3,
+body#mse a {
+  color: #007f64;
+}
+body#hps h1,
+body#hps h2 {
+  background-color: #006890;
+}
+body#hps h3,
+body#hps a {
+  color: #006890;
+}
+body#ict h1,
+body#ict h2 {
+  background-color: #007698;
+}
+body#ict h3,
+body#ict a {
+  color: #007698;
+}
+body#ma h1,
+body#ma h2 {
+  background-color: #aa272f;
+}
+body#ma h3,
+body#ma a {
+  color: #aa272f;
+}
+body#trans h1,
+body#trans h2 {
+  background-color: #44697d;
+}
+body#trans h3,
+body#trans a {
+  color: #44697d;
+}
+body#ht h1,
+body#ht h2 {
+  background-color: #d52b1e;
+}
+body#ht h3,
+body#ht a {
+  color: #d52b1e;
+}
+body#cals h1,
+body#cals h2 {
+  background-color: #e9994a;
+}
+body#cals h3,
+body#cals a {
+  color: #e9994a;
+}
+body#ct h1,
+body#ct h2 {
+  background-color: #8c8b8a;
+}
+body#ct h3,
+body#ct a {
+  color: #444;
+}
+/*GENERAL*/
+body,
+h1,
+h2,
+table {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box; /* Firefox */
+  -webkit-box-sizing: border-box; /* Safari */
+}
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 80px 20px 80px;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+figcaption {
+  line-height: 1;
+}
+h1,
+h3,
+h4,
+h5,
+h6,
+thead {
+  font-weight: bold;
+}
+h1,
+h2 {
+  width: 100%;
+  font-size: 16px;
+  color: #fff;
+}
+h1 {
+  padding: 15px 15px 10px 15px;
+  text-transform: uppercase;
+}
+h2 {
+  padding: 0px 15px 15px 15px;
+  font-style: italic;
+}
+h3,
+h4,
+h5,
+h6,
+p,
+a,
+li,
+figcaption,
+table {
+  font-size: 14px;
+}
+h3,
+h4,
+h5,
+p,
+li,
+figcaption,
+table {
+  color: #535557;
+}
+h3 {
+  text-transform: uppercase;
+}
+h3 {
+  width: 100%;
+  margin-top: 40px;
+  border-bottom: 2px solid;
+}
+h6 {
+  color: #aaabab;
+}
+h4,
+h5,
+h6,
+p,
+ul,
+ol,
+img {
+  margin-top: 15px;
+}
+ul ul,
+ul ol,
+ol ul,
+ol ol {
+  margin-top: 0 !important;
+}
+p,
+a,
+li,
+table {
+  line-height: 145%;
+}
+p#em {
+  line-height: 100%;
+  font-style: italic;
+  font-weight: bold;
+}
+li {
+  margin-left: 40px;
+}
+ul li {
+  list-style-type: square;
+}
+a {
+  font-weight: bold;
+}
+a:hover {
+  color: #aaabab !important;
+}
+/*IMAGES*/
+img,
+figcaption {
+  display: block;
+}
+img.large {
+  width: 100%;
+  height: 100%;
+}
+img.small {
+  width: 50%;
+  height: 100%;
+}
+figcaption {
+  margin-top: 5px;
+  font-weight: bold;
+}
+/*TABLE SPECIFIC*/
+table {
+  margin-top: 15px;
+  border-collapse: collapse;
+}
+table,
+th,
+td {
+  border: 1px solid #aaabab;
+}
+th,
+td {
+  padding: 5px;
+}
+/*FOOTER*/
+p#footer {
+  width: 100%;
+  margin: 45px 0 0 0;
+  padding-top: 15px;
+  border-top: 1px solid;
+  text-align: center;
+  color: #aaabab;
+}
+.column {
+  float: left;
+  width: 50%;
+}
+</style>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+body{background:#fff}
+.tabcontent.on{display:block}
+input,select{font-size:14px;padding:4px;border:1px solid #aaabab;width:100px;margin:0 4px}
+select{width:auto}
+button.act{background:#007f64;color:#fff;border:0;padding:8px 14px;font-size:14px;cursor:pointer;margin:15px 8px 0 0}
+button.act:hover{background:#3de0bd}
+.fb{margin-top:15px;border-left:4px solid #007f64;padding:5px 15px}
+.good{color:#007f64}.bad{color:#d52b1e}
+th{text-align:left}
+details{margin-top:10px;font-size:14px;color:#535557}
+summary{cursor:pointer;font-weight:bold;color:#007f64}
+.wide{overflow-x:auto}
+@media(max-width:700px){body{padding:0 12px 20px}}
+</style></head>
+<body id="mse">
+<h1>Edison 3-wire system practice</h1>
+<h2>DC supply: neutral current and voltage calculations</h2>
+<div class="tab"><button class="active" data-t="t1">Loaded neutral</button><button data-t="t2">Open neutral</button></div>
+
+<div id="t1" class="tabcontent on">
+<h3>Loaded Edison system</h3>
+<p>A 3-wire DC supply feeds the loads below through three conductors with resistance. The loads draw the currents shown. Find the voltage across each group of loads and the current in the neutral. Use electron flow: electrons leave the negative terminal, pass through the loads and return to the positive terminal.</p>
+<div class="wide" id="d1"></div>
+<h3>Your answers</h3>
+<p><label>Voltage across the L1–N load(s): <input id="a1" type="number" step="any"> V</label></p>
+<p><label>Voltage across the N–L2 load(s): <input id="b1" type="number" step="any"> V</label></p>
+<p><label>Voltage across the L1–L2 load: <input id="h1" type="number" step="any"> V</label></p>
+<p><label>Neutral current (value): <input id="n1v" type="number" step="any" min="0"> A</label>
+<label>Direction: <select id="n1d"><option value="">Select…</option><option value="supply">Toward the supply</option><option value="load">Toward the loads</option><option value="none">No current</option></select></label></p>
+<button class="act" id="c1">Check answers</button><button class="act" id="x1">New example</button>
+<div id="f1"></div>
+</div>
+
+<div id="t2" class="tabcontent">
+<h3>Open neutral</h3>
+<p>The DC loads below are rated for the supply voltage shown and draw the stated current at that voltage (treat each as a fixed resistance). The neutral conductor now <b>opens</b> between the supply and the loads. Find the voltage across each load.</p>
+<div class="wide" id="d2"></div>
+<h3>Your answers</h3>
+<p><label>Voltage across lower-voltage load A (L1 side): <input id="a2" type="number" step="any"> V</label></p>
+<p><label>Voltage across lower-voltage load B (L2 side): <input id="b2" type="number" step="any"> V</label></p>
+<p id="hrow"><label>Voltage across the L1–L2 load: <input id="h2" type="number" step="any"> V</label></p>
+<button class="act" id="c2">Check answers</button><button class="act" id="x2">New example</button>
+<div id="f2"></div>
+</div>
+<p id="footer">Answers within 0.2 V (0.5 V on the open-neutral tab) and 0.1 A are accepted. Line resistances are shown for each conductor.</p>
+
+<script>
+const $=i=>document.getElementById(i),T=(x,d=2)=>(+x).toFixed(d),near=(a,b,t)=>Math.abs(a-b)<=t;
+const rnd=(a,b,s)=>+(a+Math.round(Math.random()*(b-a)/s)*s).toFixed(2);
+const sum=a=>a.reduce((x,y)=>x+y,0),list=a=>a.map(x=>T(x,1)+" A").join(", ");
+function hint(a,c,t){for(const[x,m]of c)if(near(a,x,t))return m;return""}
+function fld(label,id,cor,t,c,u){
+ const a=parseFloat($(id).value);
+ if(near(a,cor,t))return{ok:1,h:`<p class="good">✓ ${label}: ${T(a)} ${u} is correct.</p>`};
+ let h=`<p class="bad">✗ ${label}: ${isNaN(a)?"no answer entered":"you entered "+T(a)+" "+u}. Correct answer: <b>${T(cor)} ${u}</b>.</p>`;
+ const m=isNaN(a)?"":hint(a,c,t);if(m)h+=`<p><b>Common error:</b> ${m}</p>`;return{ok:0,h}}
+function row(h,d){return`<tr><th>${h}</th><td>${d}</td></tr>`}
+
+/* ---------- Diagram ---------- */
+function diagram(s,open){
+ const A=[].concat(s.A),B=[].concat(s.B),n=A.length,xs=n==2?[350,440]:[380],xh=open?520:540,x0=90,y1=40,yn=150,y2=260,xl=xs[n-1],xe=s.H?xh:xl,m1=(y1+yn)/2,m2=(yn+y2)/2;
+ const ln=(a,b,c,d)=>`<line x1="${a}" y1="${b}" x2="${c}" y2="${d}"/>`,
+ tx=(x,y,t,a="start",c="#535557")=>`<text x="${x}" y="${y}" text-anchor="${a}" fill="${c}" stroke="none">${t}</text>`,
+ dot=(x,y)=>`<circle cx="${x}" cy="${y}" r="3" fill="#535557" stroke="none"/>`,
+ box=(x,y,w,h)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="#fff"/>`,
+ res=(y,t)=>box(148,y-9,44,18)+tx(170,y-14,t,"middle","#007f64"),
+ load=(x,a,b,t)=>ln(x,a,x,(a+b)/2-20)+(y=>`<polygon points="${x-4},${y+5} ${x+4},${y+5} ${x},${y-5}" fill="#007f64" stroke="none"/>`)((a+(a+b)/2-20)/2)+box(x-14,(a+b)/2-20,28,40)+ln(x,(a+b)/2+20,x,b)+dot(x,a)+dot(x,b)+tx(x+19,(a+b)/2+4,t);
+ let o=`<svg viewBox="0 0 620 300" width="100%" style="max-width:640px;display:block;margin-top:15px" role="img" aria-label="Edison 3-wire circuit diagram" font-family="Arial" font-size="12" fill="none" stroke="#535557" stroke-width="2">`;
+ o+=ln(x0,y1,xe,y1)+ln(x0,y2,xe,y2)+ln(x0,y1,x0,y2)+dot(x0,yn);
+ o+=open?ln(x0,yn,250,yn)+ln(290,yn,xl,yn)+ln(250,yn,285,125)+tx(270,172,"OPEN","middle","#d52b1e"):ln(x0,yn,xl,yn);
+ [m1,m2].forEach(m=>{o+=`<circle cx="${x0}" cy="${m}" r="18" fill="#fff"/>`+tx(x0-24,m+4,s.Vs+" V DC","end")+`<text x="${x0}" y="${m-3}" text-anchor="middle" font-size="15" font-weight="bold" fill="#d52b1e" stroke="none">+</text><text x="${x0}" y="${m+14}" text-anchor="middle" font-size="15" font-weight="bold" fill="#535557" stroke="none">−</text>`});
+ o+=res(y1,`R1 ${T(s.R1)} Ω`)+res(yn,`Rn ${T(s.Rn)} Ω`)+res(y2,`R2 ${T(s.R2)} Ω`);
+ o+=tx(x0+10,y1-6,"L1 (+)")+tx(x0+10,yn-6,"N")+tx(x0+10,y2-6,"L2 (−)");
+ xs.forEach((x,i)=>{o+=load(x,y1,yn,(open?"A  ":"")+T(A[i],1)+" A")+load(x,yn,y2,(open?"B  ":"")+T(B[i],1)+" A")});
+ if(s.H)o+=load(xh,y1,y2,T(s.H,1)+" A");
+ return o+tx(30,294,"Arrows show electron flow (negative terminal, through the loads, to positive terminal)")+"</svg>"}
+
+/* ---------- Tab 1 ---------- */
+let S1,S2;
+function gen1(){for(;;){
+ const Vs=rnd(50,120,5),R1=rnd(.1,1,.05),Rn=rnd(.1,1,.05),R2=rnd(.1,1,.05),k=Math.random()<.5?1:2,A=[],B=[];
+ for(let i=0;i<k;i++){A.push(rnd(2,20,.5));B.push(rnd(2,20,.5))}
+ if(Math.random()<.15)B.splice(0,B.length,...A);
+ const H=rnd(2,25,.5),I1=sum(A),I2=sum(B);
+ if((I1+H)*R1>.12*Vs||(I2+H)*R2>.12*Vs||Math.abs(I1-I2)*Rn>.08*Vs)continue;
+ return{Vs,R1,Rn,R2,A,B,H}}}
+function sol1(s){const I1=sum(s.A),I2=sum(s.B),L1=I1+s.H,L2=I2+s.H,In=I1-I2,Vn=In*s.Rn,d1=L1*s.R1,d2=L2*s.R2,V1=s.Vs-d1,V2=s.Vs-d2;
+ return{I1,I2,L1,L2,In,Vn,d1,d2,V1,V2,VA:V1-Vn,VB:V2+Vn,VH:V1+V2}}
+function new1(){S1=gen1();const s=S1;
+ $("d1").innerHTML="<table>"+row("Supply",`DC: L1 is +${s.Vs} V, N is 0 V, L2 is −${s.Vs} V (${2*s.Vs} V DC between L1 and L2)`)+
+ row("Line resistances",`L1: ${T(s.R1)} Ω &nbsp; Neutral: ${T(s.Rn)} Ω &nbsp; L2: ${T(s.R2)} Ω`)+
+ row(`Loads L1–N (${s.A.length})`,list(s.A))+row(`Loads N–L2 (${s.B.length})`,list(s.B))+row("Load L1–L2",T(s.H,1)+" A")+"</table>"+diagram(s,0);
+ ["a1","b1","h1","n1v"].forEach(i=>$(i).value="");$("n1d").value="";$("f1").innerHTML=""}
+function chk1(){const s=S1,r=sol1(s),t=.2;
+ const dirEx=r.In>1e-9?"load":r.In<-1e-9?"supply":"none",dn={supply:"toward the supply",load:"toward the loads",none:"zero (no current)"};
+ const F=[
+ fld("Voltage across L1–N load(s)","a1",r.VA,t,[
+  [r.V1,`You ignored the neutral. Its drop (In × Rn = ${T(r.Vn)} V) is in series with the loads and must be included.`],
+  [r.V1+r.Vn,"Check the sign of the neutral drop. It lowers the voltage on the heavier-loaded side and raises it on the lighter side."],
+  [s.Vs-r.I1*s.R1-r.Vn,"Line L1 carries the L1–N load current <i>plus</i> the L1–L2 load current (IL1 = I1 + IH), not just I1."],
+  [s.Vs-r.I1*s.R1,"Two errors: L1 carries I1 + IH, and the neutral drop must also be subtracted."],
+  [s.Vs,"The supply voltage is not available at the loads; every conductor drops some voltage."]],"V"),
+ fld("Voltage across N–L2 load(s)","b1",r.VB,t,[
+  [r.V2,`You ignored the neutral drop (${T(r.Vn)} V). The neutral raises or lowers this side's voltage.`],
+  [r.V2-r.Vn,"Check the sign of the neutral drop. It lowers the voltage on the heavier-loaded side and raises it on the lighter side."],
+  [s.Vs-r.I2*s.R2+r.Vn,"Line L2 carries I2 + IH, not just I2."],
+  [s.Vs,"The supply voltage is not available at the loads; every conductor drops some voltage."]],"V"),
+ fld("Voltage across L1–L2 load","h1",r.VH,t,[
+  [2*s.Vs-r.I1*s.R1-r.I2*s.R2,"Each line carries its lower-voltage loads plus IH. Use IL1 = I1 + IH and IL2 = I2 + IH."],
+  [r.VH-Math.abs(r.Vn),"The neutral is not in the L1–L2 path, so its drop does not affect this load."],
+  [r.VA,"The L1–L2 load sees both halves: VL1–L2 = VA + VB."],[2*s.Vs,"Line drops in L1 and L2 reduce the voltage at this load."]],"V")];
+ const a=parseFloat($("n1v").value),d=$("n1d").value,mag=Math.abs(r.In),I=r.I1,J=r.I2;
+ const magOk=near(a,mag,.1),dOk=d===dirEx;let h="";
+ if(magOk&&dOk)h=`<p class="good">✓ Neutral current: ${T(a)} A ${dn[dirEx]} is correct.</p>`;
+ else{h=`<p class="bad">✗ Neutral current: you entered ${isNaN(a)?"no value":T(a)+" A"}, ${d?dn[d]:"no direction"}. Correct answer: <b>${T(mag)} A ${dn[dirEx]}</b>.</p>`;
+  if(!isNaN(a)){let m="";
+   if(magOk&&!dOk)m="Magnitude is right but the direction is not. Electrons flow from negative to positive. When the L1 (positive) side draws more than the L2 side, the extra electrons are supplied through the neutral toward the loads; when L2 draws more, they flow in the neutral toward the supply.";
+   else m=hint(a,[[I+J,"You added the two sides. The neutral carries only the <i>difference</i> I1 − I2, because the two sides' currents partly cancel."],
+    [Math.abs(I-J+s.H),"The L1–L2 load current does not flow in the neutral. Its electrons go straight from L2 to L1."],
+    [Math.abs(I-J-s.H),"The L1–L2 load current does not flow in the neutral. Its electrons go straight from L2 to L1."],
+    [Math.max(I,J),"You gave the larger side's current. The neutral carries only the difference between the sides."],
+    [0,"You assumed the system is balanced, but the two sides draw different currents."]],.1);
+   if(m)h+=`<p><b>Common error:</b> ${m}</p>`}}
+ const ok=F.every(x=>x.ok)&&magOk&&dOk;
+ const w=`<details ${ok?"":"open"}><summary>Worked solution</summary>
+ <p>1. Branch currents: I1 (L1–N) = ${list(s.A)} = <b>${T(r.I1)} A</b>; I2 (N–L2) = ${list(s.B)} = <b>${T(r.I2)} A</b>; IH = ${T(s.H)} A.</p>
+ <p>2. Line currents: IL1 = I1 + IH = ${T(r.L1)} A; IL2 = I2 + IH = ${T(r.L2)} A.</p>
+ <p>3. Neutral current: In = I1 − I2 = ${T(r.I1)} − ${T(r.I2)} = <b>${T(mag)} A ${dn[dirEx]}</b>. The L1–L2 load current (IH) never enters the neutral; its electrons go straight from L2 to L1.</p>
+ <p>4. Drops: L1 = ${T(r.L1)} × ${T(s.R1)} = ${T(r.d1)} V; L2 = ${T(r.L2)} × ${T(s.R2)} = ${T(r.d2)} V; neutral Vn = ${T(r.In)} × ${T(s.Rn)} = ${T(r.Vn)} V (load end of the neutral sits ${r.Vn>=0?"above":"below"} the supply neutral).</p>
+ <p>5. VL1–N = ${s.Vs} − ${T(r.d1)} − (${T(r.Vn)}) = <b>${T(r.VA)} V</b></p>
+ <p>6. VN–L2 = ${s.Vs} − ${T(r.d2)} + (${T(r.Vn)}) = <b>${T(r.VB)} V</b></p>
+ <p>7. VL1–L2 = ${2*s.Vs} − ${T(r.d1)} − ${T(r.d2)} = <b>${T(r.VH)} V</b>. Check: VL1–N + VN–L2 = ${T(r.VA+r.VB)} V.</p></details>`;
+ $("f1").innerHTML=`<div class="fb"><p><b>${ok?"All correct!":"Not quite. Review the feedback below."}</b></p>${F.map(x=>x.h).join("")}${h}${w}</div>`}
+
+/* ---------- Tab 2 ---------- */
+function sol2(s){const RA=s.Vs/s.A,RB=s.Vs/s.B,Rs=RA+RB,RH=s.H?2*s.Vs/s.H:Infinity,Rp=s.H?Rs*RH/(Rs+RH):Rs,Rl=s.R1+s.R2,Rt=Rp+Rl,I=2*s.Vs/Rt,Vt=I*Rp,Is=Vt/Rs;
+ return{RA,RB,Rs,RH,Rp,Rl,Rt,I,Vt,Is,VA:Is*RA,VB:Is*RB,V0:2*s.Vs*Rs/(Rs+Rl)}}
+function gen2(){for(;;){
+ const s={Vs:rnd(50,120,5),R1:rnd(.1,1,.05),Rn:rnd(.1,1,.05),R2:rnd(.1,1,.05),A:rnd(2,25,.5),B:rnd(2,25,.5),H:Math.random()<.4?0:rnd(2,25,.5)};
+ if(s.A===s.B&&Math.random()<.85)continue;const r=sol2(s);
+ if(r.I*r.Rl>.1*2*s.Vs)continue;return s}}
+function new2(){S2=gen2();const s=S2;
+ $("d2").innerHTML="<table>"+row("Supply",`DC: L1 is +${s.Vs} V, N is 0 V, L2 is −${s.Vs} V (${2*s.Vs} V DC between L1 and L2)`)+
+ row("Line resistances",`L1: ${T(s.R1)} Ω &nbsp; Neutral: ${T(s.Rn)} Ω &nbsp; L2: ${T(s.R2)} Ω`)+
+ row("Load A (L1–N)",`${T(s.A,1)} A at ${s.Vs} V`)+row("Load B (N–L2)",`${T(s.B,1)} A at ${s.Vs} V`)+
+ row("Load L1–L2",s.H?`${T(s.H,1)} A at ${2*s.Vs} V`:"none")+"</table>"+diagram(s,1);
+ $("hrow").style.display=s.H?"":"none";["a2","b2","h2"].forEach(i=>$(i).value="");$("f2").innerHTML=""}
+function chk2(){const s=S2,r=sol2(s),t=.5,Vs=s.Vs;
+ const sw=(own,other,nm)=>[[other,`You swapped the loads. The load with the <i>smaller</i> current has the <i>larger</i> resistance, so it takes the <i>larger</i> share of the voltage.`]];
+ const mk=(R,own,other)=>[
+  [Vs,"With the neutral open, the loads no longer each get their own half of the supply. A and B are now in series across the full "+2*Vs+" V."],
+  [r.Vt/2,"Series loads divide voltage in proportion to resistance (R = Vrated ÷ I), not equally."],
+  [2*Vs*R/r.Rs,"You ignored the line resistance. L1 and L2 still drop voltage in series with the loads."],
+  ...(s.H?[[r.V0*R/r.Rs,"You ignored the L1–L2 load. It is in parallel with the series pair A+B, so it lowers the equivalent resistance and increases the line drop."]]:[]),
+  ...sw(own,other)];
+ const F=[fld("Voltage across load A","a2",r.VA,t,mk(r.RA,r.VA,r.VB),"V"),fld("Voltage across load B","b2",r.VB,t,mk(r.RB,r.VB,r.VA),"V")];
+ if(s.H)F.push(fld("Voltage across L1–L2 load","h2",r.Vt,t,[[2*Vs,"You ignored the line resistance of L1 and L2."],[Vs,"The L1–L2 load is across both lines, not one half of the supply."],[r.VA,"That is only load A. The L1–L2 load sees A + B combined."]],"V"));
+ const ok=F.every(x=>x.ok),pa=100*r.VA/Vs,pb=100*r.VB/Vs;
+ const hi=Math.max(r.VA,r.VB)>Vs*1.02?`<p><b>Why this matters:</b> the lighter load now sees ${T(Math.max(pa,pb),0)}% of its rated voltage. An open neutral can overheat and destroy equipment, which is why a neutral must never be fused or switched on its own.</p>`:"";
+ const w=`<details ${ok?"":"open"}><summary>Worked solution</summary>
+ <p>1. Load resistances (R = V ÷ I): RA = ${Vs} ÷ ${T(s.A,1)} = <b>${T(r.RA)} Ω</b>; RB = ${Vs} ÷ ${T(s.B,1)} = <b>${T(r.RB)} Ω</b>${s.H?`; RH = ${2*Vs} ÷ ${T(s.H,1)} = <b>${T(r.RH)} Ω</b>`:""}.</p>
+ <p>2. With the neutral open, A and B are in series: Rs = ${T(r.RA)} + ${T(r.RB)} = ${T(r.Rs)} Ω${s.H?`, in parallel with RH: Rp = (${T(r.Rs)} × ${T(r.RH)}) ÷ (${T(r.Rs)} + ${T(r.RH)}) = ${T(r.Rp)} Ω`:""}.</p>
+ <p>3. Loop resistance: Rt = R1 + R2 + Rp = ${T(s.R1)} + ${T(s.R2)} + ${T(r.Rp)} = ${T(r.Rt)} Ω. The neutral carries no current, so its resistance does not matter. I = ${2*Vs} ÷ ${T(r.Rt)} = ${T(r.I)} A.</p>
+ <p>4. Voltage at the load terminals: Vt = I × Rp = ${T(r.I)} × ${T(r.Rp)} = <b>${T(r.Vt)} V</b>${s.H?" (this is the L1–L2 load voltage)":""}.</p>
+ <p>5. Series current: Is = Vt ÷ Rs = ${T(r.Is)} A. VA = Is × RA = <b>${T(r.VA)} V</b>; VB = Is × RB = <b>${T(r.VB)} V</b>. Check: VA + VB = ${T(r.VA+r.VB)} V = Vt.</p></details>`;
+ $("f2").innerHTML=`<div class="fb"><p><b>${ok?"All correct!":"Not quite. Review the feedback below."}</b></p>${F.map(x=>x.h).join("")}${hi}${w}</div>`}
+
+document.querySelectorAll(".tab button").forEach(b=>b.onclick=()=>{
+ document.querySelectorAll(".tab button").forEach(x=>x.classList.toggle("active",x===b));
+ document.querySelectorAll(".tabcontent").forEach(c=>c.classList.toggle("on",c.id===b.dataset.t))});
+$("c1").onclick=chk1;$("x1").onclick=new1;$("c2").onclick=chk2;$("x2").onclick=new2;new1();new2();
+</script></body></html>
