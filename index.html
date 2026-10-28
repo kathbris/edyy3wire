@@ -368,16 +368,16 @@ summary{cursor:pointer;font-weight:bold;color:#007f64}
 <button class="act" id="c2">Check answers</button><button class="act" id="x2">New example</button>
 <div id="f2"></div>
 </div>
-<p id="footer">Answers within 0.2 V (0.5 V on the open-neutral tab) and 0.1 A are accepted. Line resistances are shown for each conductor.</p>
+<p id="footer">Answers within 2% of the correct value are accepted. Line resistances are shown for each conductor.</p>
 
 <script>
 const $=i=>document.getElementById(i),T=(x,d=2)=>(+x).toFixed(d),near=(a,b,t)=>Math.abs(a-b)<=t;
 const rnd=(a,b,s)=>+(a+Math.round(Math.random()*(b-a)/s)*s).toFixed(2);
 const sum=a=>a.reduce((x,y)=>x+y,0),list=a=>a.map(x=>T(x,1)+" A").join(", ");
-function hint(a,c,t){for(const[x,m]of c)if(near(a,x,t))return m;return""}
+function hint(a,c,t){for(const[x,m]of c)if(near(a,x,.02*Math.abs(x)))return m;return""}
 function fld(label,id,cor,t,c,u){
  const a=parseFloat($(id).value);
- if(near(a,cor,t))return{ok:1,h:`<p class="good">✓ ${label}: ${T(a)} ${u} is correct.</p>`};
+ if(near(a,cor,.02*Math.abs(cor)))return{ok:1,h:`<p class="good">✓ ${label}: ${T(a)} ${u} is correct.</p>`};
  let h=`<p class="bad">✗ ${label}: ${isNaN(a)?"no answer entered":"you entered "+T(a)+" "+u}. Correct answer: <b>${T(cor)} ${u}</b>.</p>`;
  const m=isNaN(a)?"":hint(a,c,t);if(m)h+=`<p><b>Common error:</b> ${m}</p>`;return{ok:0,h}}
 function row(h,d){return`<tr><th>${h}</th><td>${d}</td></tr>`}
@@ -436,7 +436,7 @@ function chk1(){const s=S1,r=sol1(s),t=.2,ng=s.pol>0?"L2":"L1",ps=s.pol>0?"L1":"
   [r.VH-Math.abs(r.Vn),"The neutral is not in the L1–L2 path, so its drop does not affect this load."],
   [r.VA,"The L1–L2 load sees both halves: VL1–L2 = VA + VB."],[2*s.Vs,"Line drops in L1 and L2 reduce the voltage at this load."]],"V")];
  const a=parseFloat($("n1v").value),d=$("n1d").value,mag=Math.abs(r.In),I=r.I1,J=r.I2;
- const magOk=near(a,mag,.1),dOk=d===dirEx;let h="";
+ const magOk=near(a,mag,.02*mag),dOk=d===dirEx;let h="";
  if(magOk&&dOk)h=`<p class="good">✓ Neutral current: ${T(a)} A ${dn[dirEx]} is correct.</p>`;
  else{h=`<p class="bad">✗ Neutral current: you entered ${isNaN(a)?"no value":T(a)+" A"}, ${d?dn[d]:"no direction"}. Correct answer: <b>${T(mag)} A ${dn[dirEx]}</b>.</p>`;
   if(!isNaN(a)){let m="";
