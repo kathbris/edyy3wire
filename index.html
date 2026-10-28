@@ -390,13 +390,13 @@ function diagram(s,open){
  dot=(x,y)=>`<circle cx="${x}" cy="${y}" r="3" fill="#535557" stroke="none"/>`,
  box=(x,y,w,h)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="#fff"/>`,
  res=(y,t)=>box(148,y-9,44,18)+tx(170,y-14,t,"middle","#007f64"),
- load=(x,a,b,t)=>ln(x,a,x,(a+b)/2-20)+(y=>`<polygon points="${x-4},${y+5} ${x+4},${y+5} ${x},${y-5}" fill="#007f64" stroke="none"/>`)((a+(a+b)/2-20)/2)+box(x-14,(a+b)/2-20,28,40)+ln(x,(a+b)/2+20,x,b)+dot(x,a)+dot(x,b)+tx(x+19,(a+b)/2+4,t);
+ load=(x,a,b,t)=>ln(x,a,x,(a+b)/2-20)+(y=>`<polygon points="${s.pol>0?`${x-4},${y+5} ${x+4},${y+5} ${x},${y-5}`:`${x-4},${y-5} ${x+4},${y-5} ${x},${y+5}`}" fill="#007f64" stroke="none"/>`)((a+(a+b)/2-20)/2)+box(x-14,(a+b)/2-20,28,40)+ln(x,(a+b)/2+20,x,b)+dot(x,a)+dot(x,b)+tx(x+19,(a+b)/2+4,t);
  let o=`<svg viewBox="0 0 620 300" width="100%" style="max-width:640px;display:block;margin-top:15px" role="img" aria-label="Edison 3-wire circuit diagram" font-family="Arial" font-size="12" fill="none" stroke="#535557" stroke-width="2">`;
  o+=ln(x0,y1,xe,y1)+ln(x0,y2,xe,y2)+ln(x0,y1,x0,y2)+dot(x0,yn);
  o+=open?ln(x0,yn,250,yn)+ln(290,yn,xl,yn)+ln(250,yn,285,125)+tx(270,172,"OPEN","middle","#d52b1e"):ln(x0,yn,xl,yn);
- [m1,m2].forEach(m=>{o+=`<circle cx="${x0}" cy="${m}" r="18" fill="#fff"/>`+tx(x0-24,m+4,s.Vs+" V DC","end")+`<text x="${x0}" y="${m-3}" text-anchor="middle" font-size="15" font-weight="bold" fill="#d52b1e" stroke="none">+</text><text x="${x0}" y="${m+14}" text-anchor="middle" font-size="15" font-weight="bold" fill="#535557" stroke="none">−</text>`});
+ [m1,m2].forEach(m=>{o+=`<circle cx="${x0}" cy="${m}" r="18" fill="#fff"/>`+tx(x0-24,m+4,s.Vs+" V DC","end")+`<text x="${x0}" y="${m-3}" text-anchor="middle" font-size="15" font-weight="bold" fill="${s.pol>0?"#d52b1e":"#535557"}" stroke="none">${s.pol>0?"+":"−"}</text><text x="${x0}" y="${m+14}" text-anchor="middle" font-size="15" font-weight="bold" fill="${s.pol>0?"#535557":"#d52b1e"}" stroke="none">${s.pol>0?"−":"+"}</text>`});
  o+=res(y1,`R1 ${T(s.R1)} Ω`)+res(yn,`Rn ${T(s.Rn)} Ω`)+res(y2,`R2 ${T(s.R2)} Ω`);
- o+=tx(x0+10,y1-6,"L1 (+)")+tx(x0+10,yn-6,"N")+tx(x0+10,y2-6,"L2 (−)");
+ o+=tx(x0+10,y1-6,"L1 ("+(s.pol>0?"+":"−")+")")+tx(x0+10,yn-6,"N")+tx(x0+10,y2-6,"L2 ("+(s.pol>0?"−":"+")+")");
  xs.forEach((x,i)=>{o+=load(x,y1,yn,(open?"A  ":"")+T(A[i],1)+" A")+load(x,yn,y2,(open?"B  ":"")+T(B[i],1)+" A")});
  if(s.H)o+=load(xh,y1,y2,T(s.H,1)+" A");
  return o+tx(30,294,"Arrows show electron flow (negative terminal, through the loads, to positive terminal)")+"</svg>"}
@@ -409,16 +409,16 @@ function gen1(){for(;;){
  if(Math.random()<.15)B.splice(0,B.length,...A);
  const H=rnd(2,25,.5),I1=sum(A),I2=sum(B);
  if((I1+H)*R1>.12*Vs||(I2+H)*R2>.12*Vs||Math.abs(I1-I2)*Rn>.08*Vs)continue;
- return{Vs,R1,Rn,R2,A,B,H}}}
+ return{Vs,R1,Rn,R2,A,B,H,pol:Math.random()<.5?1:-1}}}
 function sol1(s){const I1=sum(s.A),I2=sum(s.B),L1=I1+s.H,L2=I2+s.H,In=I1-I2,Vn=In*s.Rn,d1=L1*s.R1,d2=L2*s.R2,V1=s.Vs-d1,V2=s.Vs-d2;
  return{I1,I2,L1,L2,In,Vn,d1,d2,V1,V2,VA:V1-Vn,VB:V2+Vn,VH:V1+V2}}
 function new1(){S1=gen1();const s=S1;
- $("d1").innerHTML="<table>"+row("Supply",`DC: L1 is +${s.Vs} V, N is 0 V, L2 is −${s.Vs} V (${2*s.Vs} V DC between L1 and L2)`)+
+ $("d1").innerHTML="<table>"+row("Supply",`DC: L1 is ${s.pol>0?"+":"−"}${s.Vs} V, N is 0 V, L2 is ${s.pol>0?"−":"+"}${s.Vs} V (${2*s.Vs} V DC between L1 and L2)`)+
  row("Line resistances",`L1: ${T(s.R1)} Ω &nbsp; Neutral: ${T(s.Rn)} Ω &nbsp; L2: ${T(s.R2)} Ω`)+
  row(`Loads L1–N (${s.A.length})`,list(s.A))+row(`Loads N–L2 (${s.B.length})`,list(s.B))+row("Load L1–L2",T(s.H,1)+" A")+"</table>"+diagram(s,0);
  ["a1","b1","h1","n1v"].forEach(i=>$(i).value="");$("n1d").value="";$("f1").innerHTML=""}
-function chk1(){const s=S1,r=sol1(s),t=.2;
- const dirEx=r.In>1e-9?"load":r.In<-1e-9?"supply":"none",dn={supply:"toward the supply",load:"toward the loads",none:"zero (no current)"};
+function chk1(){const s=S1,r=sol1(s),t=.2,ng=s.pol>0?"L2":"L1",ps=s.pol>0?"L1":"L2";
+ const dirEx=r.In*s.pol>1e-9?"load":r.In*s.pol<-1e-9?"supply":"none",dn={supply:"toward the supply",load:"toward the loads",none:"zero (no current)"};
  const F=[
  fld("Voltage across L1–N load(s)","a1",r.VA,t,[
   [r.V1,`You ignored the neutral. Its drop (In × Rn = ${T(r.Vn)} V) is in series with the loads and must be included.`],
@@ -440,10 +440,10 @@ function chk1(){const s=S1,r=sol1(s),t=.2;
  if(magOk&&dOk)h=`<p class="good">✓ Neutral current: ${T(a)} A ${dn[dirEx]} is correct.</p>`;
  else{h=`<p class="bad">✗ Neutral current: you entered ${isNaN(a)?"no value":T(a)+" A"}, ${d?dn[d]:"no direction"}. Correct answer: <b>${T(mag)} A ${dn[dirEx]}</b>.</p>`;
   if(!isNaN(a)){let m="";
-   if(magOk&&!dOk)m="Magnitude is right but the direction is not. Electrons flow from negative to positive. When the L1 (positive) side draws more than the L2 side, the extra electrons are supplied through the neutral toward the loads; when L2 draws more, they flow in the neutral toward the supply.";
+   if(magOk&&!dOk)m="Magnitude is right but the direction is not. Electrons flow from negative to positive, and the heavier-loaded side draws its extra electrons through the neutral. If the side of the positive line draws more, they flow in the neutral toward the loads; if the side of the negative line draws more, they flow toward the supply.";
    else m=hint(a,[[I+J,"You added the two sides. The neutral carries only the <i>difference</i> I1 − I2, because the two sides' currents partly cancel."],
-    [Math.abs(I-J+s.H),"The L1–L2 load current does not flow in the neutral. Its electrons go straight from L2 to L1."],
-    [Math.abs(I-J-s.H),"The L1–L2 load current does not flow in the neutral. Its electrons go straight from L2 to L1."],
+    [Math.abs(I-J+s.H),`The L1–L2 load current does not flow in the neutral. Its electrons go straight from ${ng} to ${ps}.`],
+    [Math.abs(I-J-s.H),`The L1–L2 load current does not flow in the neutral. Its electrons go straight from ${ng} to ${ps}.`],
     [Math.max(I,J),"You gave the larger side's current. The neutral carries only the difference between the sides."],
     [0,"You assumed the system is balanced, but the two sides draw different currents."]],.1);
    if(m)h+=`<p><b>Common error:</b> ${m}</p>`}}
@@ -451,7 +451,7 @@ function chk1(){const s=S1,r=sol1(s),t=.2;
  const w=`<details ${ok?"":"open"}><summary>Worked solution</summary>
  <p>1. Branch currents: I1 (L1–N) = ${list(s.A)} = <b>${T(r.I1)} A</b>; I2 (N–L2) = ${list(s.B)} = <b>${T(r.I2)} A</b>; IH = ${T(s.H)} A.</p>
  <p>2. Line currents: IL1 = I1 + IH = ${T(r.L1)} A; IL2 = I2 + IH = ${T(r.L2)} A.</p>
- <p>3. Neutral current: In = I1 − I2 = ${T(r.I1)} − ${T(r.I2)} = <b>${T(mag)} A ${dn[dirEx]}</b>. The L1–L2 load current (IH) never enters the neutral; its electrons go straight from L2 to L1.</p>
+ <p>3. Neutral current: In = I1 − I2 = ${T(r.I1)} − ${T(r.I2)} = <b>${T(mag)} A ${dn[dirEx]}</b>. The L1–L2 load current (IH) never enters the neutral; its electrons go straight from ${ng} to ${ps}.</p>
  <p>4. Drops: L1 = ${T(r.L1)} × ${T(s.R1)} = ${T(r.d1)} V; L2 = ${T(r.L2)} × ${T(s.R2)} = ${T(r.d2)} V; neutral Vn = ${T(r.In)} × ${T(s.Rn)} = ${T(r.Vn)} V (load end of the neutral sits ${r.Vn>=0?"above":"below"} the supply neutral).</p>
  <p>5. VL1–N = ${s.Vs} − ${T(r.d1)} − (${T(r.Vn)}) = <b>${T(r.VA)} V</b></p>
  <p>6. VN–L2 = ${s.Vs} − ${T(r.d2)} + (${T(r.Vn)}) = <b>${T(r.VB)} V</b></p>
@@ -462,11 +462,11 @@ function chk1(){const s=S1,r=sol1(s),t=.2;
 function sol2(s){const RA=s.Vs/s.A,RB=s.Vs/s.B,Rs=RA+RB,RH=s.H?2*s.Vs/s.H:Infinity,Rp=s.H?Rs*RH/(Rs+RH):Rs,Rl=s.R1+s.R2,Rt=Rp+Rl,I=2*s.Vs/Rt,Vt=I*Rp,Is=Vt/Rs;
  return{RA,RB,Rs,RH,Rp,Rl,Rt,I,Vt,Is,VA:Is*RA,VB:Is*RB,V0:2*s.Vs*Rs/(Rs+Rl)}}
 function gen2(){for(;;){
- const s={Vs:rnd(50,120,5),R1:rnd(.1,1,.05),Rn:rnd(.1,1,.05),R2:rnd(.1,1,.05),A:rnd(2,25,.5),B:rnd(2,25,.5),H:Math.random()<.4?0:rnd(2,25,.5)};
+ const s={pol:Math.random()<.5?1:-1,Vs:rnd(50,120,5),R1:rnd(.1,1,.05),Rn:rnd(.1,1,.05),R2:rnd(.1,1,.05),A:rnd(2,25,.5),B:rnd(2,25,.5),H:Math.random()<.4?0:rnd(2,25,.5)};
  if(s.A===s.B&&Math.random()<.85)continue;const r=sol2(s);
  if(r.I*r.Rl>.1*2*s.Vs)continue;return s}}
 function new2(){S2=gen2();const s=S2;
- $("d2").innerHTML="<table>"+row("Supply",`DC: L1 is +${s.Vs} V, N is 0 V, L2 is −${s.Vs} V (${2*s.Vs} V DC between L1 and L2)`)+
+ $("d2").innerHTML="<table>"+row("Supply",`DC: L1 is ${s.pol>0?"+":"−"}${s.Vs} V, N is 0 V, L2 is ${s.pol>0?"−":"+"}${s.Vs} V (${2*s.Vs} V DC between L1 and L2)`)+
  row("Line resistances",`L1: ${T(s.R1)} Ω &nbsp; Neutral: ${T(s.Rn)} Ω &nbsp; L2: ${T(s.R2)} Ω`)+
  row("Load A (L1–N)",`${T(s.A,1)} A at ${s.Vs} V`)+row("Load B (N–L2)",`${T(s.B,1)} A at ${s.Vs} V`)+
  row("Load L1–L2",s.H?`${T(s.H,1)} A at ${2*s.Vs} V`:"none")+"</table>"+diagram(s,1);
